@@ -1,0 +1,23 @@
+# ~/.pythonrc
+
+from __future__ import division,print_function
+
+try:
+    # import readline and  common libraries
+
+    import readline
+
+    import os, json
+    from glob import glob
+    import numpy as np
+    np.set_printoptions(precision=4, linewidth=100)
+    from matplotlib import pyplot as plt
+except ImportError:
+    print("Module readline not available.")
+else:
+    # enable syntax completion
+
+    import rlcompleter
+    readline.parse_and_bind("tab: complete")
+
+    os.chdir("part1")

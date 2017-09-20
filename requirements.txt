@@ -1,0 +1,9 @@
+bcolz
+keras==2.0.7
+matplotlib
+pandas
+pillow
+scikit-learn
+sympy
+tensorflow
+theano
