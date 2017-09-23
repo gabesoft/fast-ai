@@ -1,6 +1,6 @@
 from __future__ import division,print_function
 import math, os, json, sys, re
-import cPickle as pickle
+# import cPickle as pickle
 from glob import glob
 import numpy as np
 from matplotlib import pyplot as plt
@@ -9,8 +9,8 @@ from collections import OrderedDict
 import itertools
 from itertools import chain
 
-import pandas as pd
 import PIL
+import pandas as pd
 from PIL import Image
 from numpy.random import random, permutation, randn, normal, uniform, choice
 from numpy import newaxis
@@ -19,7 +19,7 @@ from scipy import misc, ndimage
 from scipy.ndimage.interpolation import zoom
 from scipy.ndimage import imread
 from sklearn.metrics import confusion_matrix
-# import bcolz
+import bcolz
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.manifold import TSNE
 
@@ -69,28 +69,32 @@ def to_plot(img):
     else:
         return np.rollaxis(img, 0, 3).astype(np.uint8)
 
+
 def plot(img):
     plt.imshow(to_plot(img))
 
 
 def floor(x):
     return int(math.floor(x))
+
+
 def ceil(x):
     return int(math.ceil(x))
 
-def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
-    if type(ims[0]) is np.ndarray:
-        ims = np.array(ims).astype(np.uint8)
-        if (ims.shape[-1] != 3):
-            ims = ims.transpose((0,2,3,1))
+
+def plots(imgs, figsize=(12, 6), rows=1, interp=False, titles=None):
+    if type(imgs[0]) is np.ndarray:
+        imgs = np.array(imgs).astype(np.uint8)
+        if (imgs.shape[-1] != 3):
+            imgs = imgs.transpose((0, 2, 3, 1))
     f = plt.figure(figsize=figsize)
-    cols = len(ims)//rows if len(ims) % 2 == 0 else len(ims)//rows + 1
-    for i in range(len(ims)):
+    cols = len(imgs)//rows if len(imgs) % 2 == 0 else len(imgs)//rows + 1
+    for i in range(len(imgs)):
         sp = f.add_subplot(rows, cols, i+1)
         sp.axis('Off')
         if titles is not None:
             sp.set_title(titles[i], fontsize=16)
-        plt.imshow(ims[i], interpolation=None if interp else 'none')
+        plt.imshow(imgs[i], interpolation=None if interp else 'none')
 
 
 def do_clip(arr, mx):
@@ -132,7 +136,7 @@ def copy_model(m):
 # def insert_layer(model, new_layer, index):
 #     res = Sequential()
 #     for i,layer in enumerate(model.layers):
-#         if i==index: res.add(new_layer)
+#         if index of /i==index: res.add(new_layer)
 #         copied = layer_from_config(wrap_config(layer))
 #         res.add(copied)
 #         copied.set_weights(layer.get_weights())
