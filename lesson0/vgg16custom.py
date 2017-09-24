@@ -42,7 +42,7 @@ def get_classes():
     fpath = get_file(fname, FILES_PATH + fname, cache_subdir='models')
     with open(fpath) as f:
         class_dict = json.load(f)
-    [class_dict[str(i)][1] for i in range(len(class_dict))]
+        [class_dict[str(i)][1] for i in range(len(class_dict))]
 
 
 def FCBlock(model):
@@ -56,6 +56,19 @@ def ConvBlock(layers, model, filters):
         model.add(Conv2D(filters, (3, 3), activation='relu'))
 
     model.add(MaxPooling2D((2, 2), strides=(2, 2)))
+
+
+def get_batches(directory,
+                gen=image.ImageDataGenerator(),
+                shuffle=True,
+                batch_size=8,
+                class_mode='categorical'):
+
+    return gen.flow_from_directory(directory,
+                                   target_size=(224, 224),
+                                   class_mode=class_mode,
+                                   shuffle=shuffle,
+                                   batch_size=batch_size)
 
 
 class Vgg16Custom():
@@ -86,16 +99,3 @@ class Vgg16Custom():
         load_weights(model)
 
         self.model = model
-
-    def get_batches(self,
-                    directory,
-                    gen=image.ImageDataGenerator(),
-                    shuffle=True,
-                    batch_size=8,
-                    class_mode='categorical'):
-
-        return gen.flow_from_directory(directory,
-                                       target_size=(224, 224),
-                                       class_mode=class_mode,
-                                       shuffle=shuffle,
-                                       batch_size=batch_size)

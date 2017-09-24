@@ -74,6 +74,7 @@ in
         tmux
         fish
         zsh
+        gnumake
 
         aspell
         aspellDicts.en

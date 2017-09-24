@@ -45,7 +45,7 @@ vgg.predict(imgs, True)
 # sys.path.append('/home/gabe/.nix-profile/lib/python2.7/site-packages/')
 
 # start ipython in vi mode
-# ipython --TerminalInteractiveShell.editing_mode=vi
+# ipython --TerminalInteractiveShell.editing_mode=vi --matplotlib
 
 
 # start the shell with: nix-shell ./.conda-shell.nix
