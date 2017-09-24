@@ -76,6 +76,8 @@ in
         zsh
         gnumake
 
+        python36Packages.pip
+
         aspell
         aspellDicts.en
       ]

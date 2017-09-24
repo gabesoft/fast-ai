@@ -31,6 +31,9 @@ plots(imgs, titles=labels)
 
 vgg.predict(imgs, True)
 
+# for theano set up .theanorc
+# use GPU
+
 # reload in python 3
 # from importlib import reload
 
