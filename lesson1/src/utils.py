@@ -180,13 +180,13 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
 
 
 # TODO add bcolz to nix
-# def save_array(fname, arr):
-#     c=bcolz.carray(arr, rootdir=fname, mode='w')
-#     c.flush()
+def save_array(fname, arr):
+    c=bcolz.carray(arr, rootdir=fname, mode='w')
+    c.flush()
 
 
-# def load_array(fname):
-#     return bcolz.open(fname)[:]
+def load_array(fname):
+    return bcolz.open(fname)[:]
 
 
 def mk_size(img, r2c):
