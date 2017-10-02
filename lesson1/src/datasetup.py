@@ -2,11 +2,7 @@ import numpy as np
 import os
 from glob import glob
 from shutil import copyfile
-
-
-def mkdir(directory):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+from utils import mkdir
 
 
 def create_directories(data_dir):

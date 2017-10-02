@@ -3,6 +3,7 @@ import itertools
 
 from keras import backend as kb
 from matplotlib import pyplot as plt
+from PIL import Image
 
 
 def to_plot(img):
@@ -14,6 +15,11 @@ def to_plot(img):
 
 def plot(img):
     plt.imshow(to_plot(img))
+
+
+def show_image(path):
+    img = Image.open(path)
+    plt.imshow(np.asanyarray(img))
 
 
 def plots(imgs, figsize=(12, 6), rows=1, interp=False, titles=None):

@@ -1,7 +1,8 @@
 import numpy as np
 
 from keras.preprocessing import image
-from time import time
+from time import strftime
+from utils import mkdir
 
 
 def get_batches(path,
@@ -25,10 +26,13 @@ def train_model(vgg, data_path, batch_size=64, epochs=3):
     vgg.finetune(t_batches)
     vgg.model.optimizer.lr = 0.01
 
+    mkdir(results_path)
+
+    t = strftime('%Y.%m.%d')
     for epoch in range(epochs):
         print("Running epoch: %d" % epoch)
         vgg.fit(t_batches, v_batches, batch_size=batch_size, nb_epoch=1)
-        weights_file = 'ft%d-%s.h5' % (epoch, time())
+        weights_file = 'ft%d-%s.h5' % (epoch, t)
         vgg.model.save_weights(results_path + '/' + weights_file)
 
     print("Completed %d fit operations" % epochs)
