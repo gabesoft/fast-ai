@@ -1,5 +1,5 @@
 from trainhelper import train_model, test_model
-from vgg16 import Vgg16
+from vgg16wrapper import Vgg16
 from utils import save_array, load_array
 
 DATA_DIR = '../data'
