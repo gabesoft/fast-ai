@@ -37,7 +37,7 @@ class Vgg16():
         x = Dense(batches.num_class, activation='softmax')(x)
         img_input = model.layers[0].input
 
-        self.model = Model(inputs=img_input, output=x)
+        self.model = Model(inputs=img_input, outputs=x)
         self.compile()
         self.classes = list(iter(batches.class_indices))
 
