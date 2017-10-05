@@ -2,25 +2,23 @@ from utils.trainhelper import train_model, test_model
 from utils.vgg16_wrapper import Vgg16
 from utils.utils import save_array, load_array
 
-DATA_DIR = '../data'
-RESULTS_DIR = DATA_DIR + '/results'
 
-
-def train_and_test(no_of_epochs=4):
+def train_and_test(data_dir, no_of_epochs=4):
+    results_dir = data_dir + '/results'
     batch_size = 64
     vgg = Vgg16()
 
-    train_model(vgg, DATA_DIR, batch_size, no_of_epochs)
+    train_model(vgg, data_dir, batch_size, no_of_epochs)
 
-    batches, preds = test_model(vgg, DATA_DIR + '/test', batch_size=batch_size)
+    batches, preds = test_model(vgg, data_dir + '/test', batch_size=batch_size)
 
-    save_array(RESULTS_DIR + '/test_preds', preds)
-    save_array(RESULTS_DIR + '/filenames', batches.filenames)
+    save_array(results_dir + '/test_preds', preds)
+    save_array(results_dir + '/filenames', batches.filenames)
 
     return batches, preds, vgg
 
 
 def load_pred_data():
-    preds = load_array(RESULTS_DIR + '/test_preds')
-    filenames = load_array(RESULTS_DIR + '/filenames')
+    preds = load_array(results_dir + '/test_preds')
+    filenames = load_array(results_dir + '/filenames')
     return filenames, preds
