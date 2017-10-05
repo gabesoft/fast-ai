@@ -17,7 +17,7 @@ def train_and_test(no_of_epochs=4):
     save_array(RESULTS_DIR + '/test_preds', preds)
     save_array(RESULTS_DIR + '/filenames', batches.filenames)
 
-    return batches, preds
+    return batches, preds, vgg
 
 
 def load_pred_data():

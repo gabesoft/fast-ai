@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""VGG16 model for Keras.
+"""VGG19 model for Keras.
 
 # Reference
 
@@ -23,18 +23,20 @@ from keras.engine.topology import get_source_inputs
 from keras.utils import layer_utils
 from keras.utils.data_utils import get_file
 from keras import backend as K
+from keras.applications.imagenet_utils import decode_predictions
+from keras.applications.imagenet_utils import preprocess_input
 from keras.applications.imagenet_utils import _obtain_input_shape
 
 
-WEIGHTS_PATH = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5'
-WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
+WEIGHTS_PATH = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels.h5'
+WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 
-def VGG16(include_top=True, weights='imagenet',
+def VGG19(include_top=True, weights='imagenet',
           input_tensor=None, input_shape=None,
           pooling=None,
           classes=1000):
-    """Instantiates the VGG16 architecture.
+    """Instantiates the VGG19 architecture.
 
     Optionally loads weights pre-trained
     on ImageNet. Note that when using TensorFlow,
@@ -58,7 +60,7 @@ def VGG16(include_top=True, weights='imagenet',
             if `include_top` is False (otherwise the input shape
             has to be `(224, 224, 3)` (with `channels_last` data format)
             or `(3, 224, 224)` (with `channels_first` data format).
-            It should have exactly 3 input channels,
+            It should have exactly 3 inputs channels,
             and width and height should be no smaller than 48.
             E.g. `(200, 200, 3)` would be one valid value.
         pooling: Optional pooling mode for feature extraction
@@ -120,18 +122,21 @@ def VGG16(include_top=True, weights='imagenet',
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv4')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
 
     # Block 4
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv4')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
 
     # Block 5
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3')(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv4')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)
 
     if include_top:
@@ -153,20 +158,20 @@ def VGG16(include_top=True, weights='imagenet',
     else:
         inputs = img_input
     # Create model.
-    model = Model(inputs, x, name='vgg16')
+    model = Model(inputs, x, name='vgg19')
 
     # load weights
     if weights == 'imagenet':
         if include_top:
-            weights_path = get_file('vgg16_weights_tf_dim_ordering_tf_kernels.h5',
+            weights_path = get_file('vgg19_weights_tf_dim_ordering_tf_kernels.h5',
                                     WEIGHTS_PATH,
                                     cache_subdir='models',
-                                    file_hash='64373286793e3c8b2b4e3219cbf3544b')
+                                    file_hash='cbe5617147190e668d6c5d5026f83318')
         else:
-            weights_path = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5',
+            weights_path = get_file('vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5',
                                     WEIGHTS_PATH_NO_TOP,
                                     cache_subdir='models',
-                                    file_hash='6d6bbae143d832006294945121d1f1fc')
+                                    file_hash='253f8cb515780f3b799900260a226db6')
         model.load_weights(weights_path)
         if K.backend() == 'theano':
             layer_utils.convert_all_kernels_in_model(model)
