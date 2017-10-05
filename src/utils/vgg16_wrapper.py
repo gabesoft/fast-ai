@@ -6,7 +6,7 @@ from keras.layers import Dense
 from keras.models import Model
 from keras.utils.data_utils import get_file
 
-from vgg16 import VGG16
+from models.vgg16 import VGG16
 
 FILE_PATH = 'http://files.fast.ai/models/'
 

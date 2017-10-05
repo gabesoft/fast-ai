@@ -2,7 +2,7 @@ import numpy as np
 
 from keras.preprocessing import image
 from time import strftime
-from utils import mkdir
+from utils.utils import mkdir
 
 
 def get_batches(path,
