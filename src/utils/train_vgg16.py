@@ -18,7 +18,8 @@ def train_and_test(data_dir, no_of_epochs=4):
     return batches, preds, vgg
 
 
-def load_pred_data():
+def load_pred_data(data_dir):
+    results_dir = data_dir + '/results'
     preds = load_array(results_dir + '/test_preds')
     filenames = load_array(results_dir + '/filenames')
     return filenames, preds
