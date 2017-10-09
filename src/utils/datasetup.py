@@ -2,17 +2,17 @@ import numpy as np
 import os
 from glob import glob
 from shutil import copyfile
-from utils import mkdir
+from utils.utils import mkdir
 
 
 def create_directories(data_dir):
-    mkdir(data_dir + '/valid')
-    mkdir(data_dir + '/results')
-    mkdir(data_dir + '/sample/train')
-    mkdir(data_dir + '/sample/test')
-    mkdir(data_dir + '/sample/valid')
-    mkdir(data_dir + '/sample/results')
-    mkdir(data_dir + '/test/unknown')
+    mkdir(os.path.join(data_dir, 'valid'))
+    mkdir(os.path.join(data_dir, 'results'))
+    mkdir(os.path.join(data_dir, 'sample/train'))
+    mkdir(os.path.join(data_dir, 'sample/test'))
+    mkdir(os.path.join(data_dir, 'sample/valid'))
+    mkdir(os.path.join(data_dir, 'sample/results'))
+    mkdir(os.path.join(data_dir, 'test/unknown'))
 
 
 def get_rand_train_files(data_dir):
