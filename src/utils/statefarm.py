@@ -37,29 +37,56 @@ def get_driver_data(data_dir):
 
 
 def get_valid_path(train_path):
+    """Convert a training path into a validation path"""
+
     t_path = PurePath(train_path)
     index = t_path.parts.index('train')
     parts = t_path.parts[:index] + ('valid',) + t_path.parts[index+1:]
-    return PurePath().joinpath(*parts)
+    return str(PurePath().joinpath(*parts))
+
+
+def get_sample_path(file_path):
+    """Convert a file path into a sample path"""
+
+    path = PurePath(file_path)
+    index = path.parts.index('train')
+    parts = path.parts[:index] + ('sample',) + path.parts[index:]
+    return str(PurePath().joinpath(*parts))
 
 
 def create_validation_set(data_dir):
     """Move the validation files to a separate directory"""
 
     train_dir = os.path.join(data_dir, 'train')
-    valid_dir = os.path.join(data_dir, 'valid')
     driver_data = get_driver_data(data_dir)
     valid_set = set({img for (img, dr_id) in driver_data.items() if dr_id in DRIVER_IDS_VALID})
-    train_files = glob(train_dir + '/*/*.jpg')
+    train_files = glob(train_dir + '/c?/*.jpg')
     valid_files = [f for f in train_files if os.path.basename(f) in valid_set]
 
-    mkdir(valid_dir)
-    for f in valid_files:
-        train_path = f
-        valid_path = get_valid_path(f)
-        parent_dir = valid_path.parent
-
-        mkdir(parent_dir)
+    for train_path in valid_files:
+        valid_path = get_valid_path(train_path)
+        mkdir(os.path.dirname(valid_path))
         os.rename(train_path, valid_path)
 
-# def load_train():
+
+def create_sample_set(data_dir):
+    """Create a sample set of the training data for quick experimentation"""
+
+    train_dir = os.path.join(data_dir, 'train')
+    driver_data = get_driver_data(data_dir)
+    sample_set = set({img for (img, dr_id) in driver_data.items() if dr_id in DRIVER_IDS_TRAIN[:2]})
+    valid_set = set({img for (img, dr_id) in driver_data.items() if dr_id in DRIVER_IDS_TRAIN[2:3]})
+
+    train_files = glob(train_dir + '/c?/*.jpg')
+    sample_files = [f for f in train_files if os.path.basename(f) in sample_set]
+    valid_files = [f for f in train_files if os.path.basename(f) in valid_set]
+
+    for train_path in sample_files:
+        target_path = get_sample_path(train_path)
+        mkdir(os.path.dirname(target_path))
+        copyfile(train_path, target_path)
+
+    for train_path in valid_files:
+        target_path = get_valid_path(get_sample_path(train_path))
+        mkdir(os.path.dirname(target_path))
+        copyfile(train_path, target_path)
