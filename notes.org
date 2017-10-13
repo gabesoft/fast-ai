@@ -1,0 +1,7 @@
+* Layer types
+** Batch normalization
+** Dense
+** Convolution
+** Max pooling
+* Regularization types
+** Data augmentation
