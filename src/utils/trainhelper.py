@@ -4,21 +4,38 @@ import os
 from keras.models import model_from_json
 from keras.preprocessing import image
 from time import strftime
-from utils.utils import mkdir
+from utils.utils import mkdir, get_steps
 from keras.utils import to_categorical as onehot
+
+
+def un_onehot(labels, num_class):
+    """Reverse of the one-hot operation"""
+    return (labels * range(num_class)).sum(axis=1)
 
 
 def get_batches(path,
                 gen=image.ImageDataGenerator(),
                 shuffle=True,
                 batch_size=8,
-                class_mode='categorical'):
-
+                class_mode='categorical',
+                target_size=(224, 224),
+                save_to_dir=None):
     return gen.flow_from_directory(path,
-                                   target_size=(224, 224),
+                                   target_size=target_size,
                                    class_mode=class_mode,
                                    shuffle=shuffle,
-                                   batch_size=batch_size)
+                                   batch_size=batch_size,
+                                   save_to_dir=save_to_dir)
+
+
+def get_data(path, gen=image.ImageDataGenerator(), shuffle=False, class_mode=None, target_size=(224, 224)):
+    batches = get_batches(path,
+                          gen=gen,
+                          shuffle=shuffle,
+                          batch_size=1,
+                          class_mode=class_mode,
+                          target_size=target_size)
+    return np.concatenate([batches.next() for i in range(batches.samples)])
 
 
 def get_classes(data_dir):
@@ -72,7 +89,7 @@ def test_model(vgg, data_path, batch_size=8):
                           shuffle=False,
                           batch_size=batch_size,
                           class_mode=None)
-    steps = int(np.ceil(batches.samples/batch_size))
+    steps = get_steps(batches)
     preds = vgg.model.predict_generator(batches, steps)
     return batches, preds
 
