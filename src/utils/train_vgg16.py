@@ -1,4 +1,4 @@
-from utils.trainhelper import train_model, test_model
+from utils.train_helper import train_model, test_model
 from utils.vgg16_wrapper import Vgg16
 from utils.utils import save_array, load_array
 
